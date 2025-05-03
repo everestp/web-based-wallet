@@ -12,7 +12,7 @@ const Welcome = () => {
   
         {/* Content */}
         <h1 className="text-5xl font-extrabold mb-4 z-10 relative drop-shadow-md">
-          Welcome to Re-Money
+          Welcome to Re-Paisa
         </h1>
         <p className="text-lg text-gray-300 max-w-xl mx-auto mb-8 z-10 relative">
           A secure, fast, and decentralized way to manage your digital assets. Send, receive, and explore Web3 seamlessly.
@@ -20,7 +20,7 @@ const Welcome = () => {
   
         {/* CTA */}
         <h1 className="px-6 py-3 rounded-full text-lg font-semibold shadow-lg transition z-10 relative">
-        Re-defining money with Re-Money
+        Re-defining money with Re-Paisa
 
 
         </h1>

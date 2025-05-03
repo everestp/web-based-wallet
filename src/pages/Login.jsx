@@ -8,6 +8,7 @@ const navigate = useNavigate()
     e.preventDefault();
     alert(`Phone number submitted: ${phone}`);
     setPhone('');
+    console.log("o" ,phone)
     navigate("/home")
   };
 
