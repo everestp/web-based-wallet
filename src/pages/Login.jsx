@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [phone, setPhone] = useState('');
-
+const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Phone number submitted: ${phone}`);
     setPhone('');
+    navigate("/home")
   };
 
   return (

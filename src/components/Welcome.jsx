@@ -1,4 +1,6 @@
 import React from 'react';
+import FeaturesSection from './FeaturesSection';
+import WhyChooseUs from './WhyChooseUs ';
 
 const Welcome = () => {
   
@@ -31,6 +33,8 @@ const Welcome = () => {
             className="mx-auto w-32 h-32 opacity-90"
           />
         </div>
+        <FeaturesSection/>
+        <WhyChooseUs/>
       </section>
   );
 };
