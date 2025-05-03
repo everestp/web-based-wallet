@@ -10,16 +10,18 @@ const Welcome = () => {
   
         {/* Content */}
         <h1 className="text-5xl font-extrabold mb-4 z-10 relative drop-shadow-md">
-          Welcome to MetaVault
+          Welcome to Re-Money
         </h1>
         <p className="text-lg text-gray-300 max-w-xl mx-auto mb-8 z-10 relative">
           A secure, fast, and decentralized way to manage your digital assets. Send, receive, and explore Web3 seamlessly.
         </p>
   
         {/* CTA */}
-        <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-full text-lg font-semibold shadow-lg transition z-10 relative">
-          Connect Wallet
-        </button>
+        <h1 className="px-6 py-3 rounded-full text-lg font-semibold shadow-lg transition z-10 relative">
+        Re-defining money with Re-Money
+
+
+        </h1>
   
         {/* Icon or Illustration */}
         <div className="mt-10 z-10 relative">
