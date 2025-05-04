@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ethers } from 'ethers';
+import crypto from 'crypto'
+import { Cipher } from "crypto";
 const Signup = () => {
 
     const [seedPhrase, setSeedPhrase] = useState('');
@@ -9,6 +11,7 @@ const Signup = () => {
     const [selectedWallet, setSelectedWallet] = useState({});
     const [walletBalance, setWalletBalance] = useState();
     const [isTransactionForm, setIsTransactionForm] = useState(false)
+    const secureKey = process.env.SECURE_KEY;
     const [data, setData] = useState({
         name: "",
         phone: "",
@@ -53,6 +56,28 @@ const Signup = () => {
     
         fetchBalance(walletWithId);
       };
+
+
+
+const createWalletForUser = async (userId, seedPhrase) => {
+    if (!seedPhrase) return;
+
+    // Generate wallet
+    const hdNode = ethers.HDNodeWallet.fromPhrase(seedPhrase);
+
+    // Encrypt private key before storing it
+    const encryptedPrivateKey = crypto.createCipher("aes-256-cbc", "your-secure-key")
+        .update(hdNode.privateKey, "utf8", "hex") + crypto.createCipher("aes-256-cbc", "Dfdfnsdkfnsdkfnsdkfn").final("hex");
+
+    // Store in DB
+    await UserModel.findByIdAndUpdate(userId, {
+        publicKey: hdNode.publicKey,
+        privateKey: encryptedPrivateKey, // Store encrypted private key
+        address: hdNode.address
+    });
+
+    return hdNode.address;
+};
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
