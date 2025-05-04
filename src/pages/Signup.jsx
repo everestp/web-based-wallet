@@ -1,14 +1,58 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { ethers } from 'ethers';
 const Signup = () => {
 
+    const [seedPhrase, setSeedPhrase] = useState('');
+    const [wallets, setWallets] = useState([]);
+    const [selectedWalletIndex, setSelectedWalletIndex] = useState(0);
+    const [selectedWallet, setSelectedWallet] = useState({});
+    const [walletBalance, setWalletBalance] = useState();
+    const [isTransactionForm, setIsTransactionForm] = useState(false)
+    const [data, setData] = useState({
+        name: "",
+        phone: "",
+        password: "",
+        privateKey: "",
+        seedPhrase: "",
+        publicKey: ""
+      });
 
-  const [data, setData] = useState({
-    name: "",
-    phone: "",
-    pass: "",
-  });
+
+    const updateData = (key, value) => {
+        setData(prevData => ({
+            ...prevData,
+            [key]: value
+        }));
+    };
+
+    const generateSeedPhrase = () => {
+        const mnemonic = ethers.Mnemonic.entropyToPhrase(ethers.randomBytes(16));
+
+        updateData("seedPhrase", mnemonic);
+      };
+      const createWalletFromSeed = () => {
+        if (!seedPhrase) return;
+        const hdNode = ethers.HDNodeWallet.fromPhrase(seedPhrase, `m/44'/60'/0'/0/${wallets.length}`);
+    
+        const walletWithId = {
+          id: wallets.length + 1,
+          address: hdNode.address,
+          privateKey: hdNode.privateKey,
+          publicKey: hdNode.publicKey,
+          signingKey: hdNode.signingKey,
+          mnemonic: hdNode.mnemonic.phrase,
+          path: hdNode.path,
+        };
+    
+        setSelectedWallet(hdNode);
+        const newWallets = [...wallets, walletWithId];
+        setWallets(newWallets);
+        setSelectedWalletIndex(newWallets.length - 1);
+        setIsTransactionForm(false)
+    
+        fetchBalance(walletWithId);
+      };
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
