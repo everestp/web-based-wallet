@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [phone, setPhone] = useState('');
+  const [pass, setPass] = useState('');
 const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ const navigate = useNavigate()
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-lg shadow-md w-80"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Log in</h2>
         <label className="block text-gray-700 mb-1" htmlFor="phone">
           Phone Number
         </label>
@@ -27,7 +28,19 @@ const navigate = useNavigate()
           id="phone"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          placeholder="+1 234 567 890"
+          placeholder="+977 981234567"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+          required
+        />
+          <label className="block text-gray-700 mb-1" htmlFor="phone">
+          Phone Number
+        </label>
+        <input
+          type="password"
+          id="text"
+          value={pass}
+          onChange={(e) => setPass(e.target.value)}
+          placeholder="Password"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
           required
         />
@@ -35,7 +48,7 @@ const navigate = useNavigate()
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
         >
-          Sign Up
+          Login
         </button>
       </form>
     </div>

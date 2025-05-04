@@ -10,6 +10,7 @@ import WhyChooseUs from './components/WhyChooseUs '
 import SeedPhraseComponent from './components/SeedPhraseComponent'
 import { BrowserRouter } from 'react-router-dom'
 import { Routes,Route } from 'react-router-dom'
+import Signup from './pages/Signup'
 
 function App() {
 
@@ -19,7 +20,8 @@ function App() {
  <Navbar/>
 <Routes>
  <Route path='/' element={<Welcome/>}/>
- <Route path='/signup' element={<Login/>}/>
+ <Route path='/signup' element={<Signup/>}/>
+ <Route path='/login' element={<Login/>}/>
  <Route path='/home' element={<Dashboard/>}/>
  <Route path='*' element={<Welcome/>}/>
 
