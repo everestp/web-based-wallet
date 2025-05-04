@@ -1,8 +1,21 @@
 import React from 'react';
 import { useUser } from '../context/UserContext';
+import { data, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  const  {userData,token} = useUser();
+  const  {userData,token,setToken} = useUser();
+   const navigate = useNavigate();
+
+  const logout = () => {
+    // Clear token from localStorage or sessionStorage
+    localStorage.removeItem("token");
+  setToken("")
+    // Clear user data
+  navigate("/")
+  
+    // Redirect user to login page
+   
+  };
   return (
     <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen p-6">
       
@@ -13,18 +26,18 @@ const Dashboard = () => {
         <div>
       
           <h1 className="text-3xl font-bold text-gray-800">Welcome,{userData.name} 👋</h1>
-          <p className="text-gray-600 text-lg mt-1">How are you today? {token}</p>
+          <p className="text-gray-600 text-lg mt-1">How are you today? </p>
         </div>
         
         {/* Profile & Logout */}
         <div className="flex items-center gap-4">
           <div className="flex items-center bg-white p-3 rounded-xl shadow-md cursor-pointer hover:bg-blue-100 transition">
-            <span className="ml-3 font-medium text-gray-700">John Doe</span>
+            <span className="ml-3 font-medium text-gray-700">{userData.name}</span>
           </div>
 
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition"
-            onClick={() => alert('Logging out...')} // Replace with actual logout logic
+            onClick={logout} // Replace with actual logout logic
           >
             Logout
           </button>

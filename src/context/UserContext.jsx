@@ -18,10 +18,11 @@ export const UserContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    setToken(localStorage.getItem('token')) // Fixed data assignment
     const signinUser = async () => {
       try {
         const response = await loggedinUser(token);
-        setUserData(response.data); // Fixed data assignment
+        setUserData(response.data);
         toast.success("Welcome " + response.data.name);
       } catch (error) {
         toast.error("Error fetching User data");
