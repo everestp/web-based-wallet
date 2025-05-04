@@ -3,66 +3,39 @@ import { useNavigate } from "react-router-dom";
 import { ethers } from 'ethers';
 import axios from "axios";
 import { register } from "../assets/service/AuthService";
-
+import {Keypair} from "@solana/web3.js";
+import { Buffer } from "buffer";
 const Signup = () => {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [privateKey, setPrivateKey] = useState("");
-  const [seedPhrase, setSeedPhrase] = useState("");
+  
   const [publicKey, setPublicKey] = useState("");
-  const [address, setAddress] = useState("");
-  const [formdata ,setFormdata] =useState({})
+
   
 const data = {
   name: name,
   phone: phone,
   password: password,
   privateKey:privateKey,
-  seedPhrase: seedPhrase,
+  
   publicKey:publicKey,
-  address:address
+ 
 
 }
 
+//convert to hex to store in db
+const uint8ArrayToHex = (uintArray) => {
+  return Buffer.from(uintArray).toString("hex");
+};
 
 
-   
 
-    const generateSeedPhrase = () => {
-        const mnemonic = ethers.Mnemonic.entropyToPhrase(ethers.randomBytes(16));
-       setSeedPhrase(mnemonic)
-        return mnemonic; // ✅ Returns the generated mnemonic
-    };
+  
 
-    const createWalletForUser =  async (seedPhrase) => {
-        if (!seedPhrase) return;
-
-        // Generate wallet
-        const hdWallet = ethers.HDNodeWallet.fromPhrase(seedPhrase);
-
-        // Debugging logs
-        console.log("Generated Public Key:", hdWallet.publicKey);
-        console.log("Generated Address:", hdWallet.address);
-
-        // Encrypt private key before storing it
-      setPrivateKey(hdWallet.privateKey)
-        
-        setPublicKey(hdWallet.publicKey);
-       setAddress(hdWallet.address)
-     
-console.log(data)
- try {
-  const  response  =  await register(data)
-console.log("This is the response ", response)
- } catch (error) {
-  console.log("Erroro",error)
- }
-
-
-        return hdWallet.address; // ✅ Corrected return
-    };
+;
 
     const navigate = useNavigate();
 
@@ -70,11 +43,24 @@ console.log("This is the response ", response)
         e.preventDefault();
         alert(`Phone number submitted: ${phone}`);
         console.log(phone);
+        const keypair =Keypair.generate()
+        console.log("This is the keypair ",keypair.secretKey)
+        // console.log("this is the solana keypait",keypair.secretKey)
 
-        const seedPhrase = generateSeedPhrase(); // ✅ Capture the returned seed phrase
-        console.log("Generated Seed Phrase:", seedPhrase);
-
-        createWalletForUser(seedPhrase); // ✅ Use the correctly returned seed phrase
+      const keypair1 =   Keypair.fromSecretKey(keypair.secretKey);
+      console.log("This is the keypair 1",keypair1.secretKey)
+      console.log("Wallet Address:", keypair.publicKey);
+      console.log("Private Key:", keypair1.secretKey);
+        console.log("Wallet Address by toString ,methof :", (keypair.publicKey).toString());
+        console.log("Private Key bu uin  convert:", uint8ArrayToHex(keypair1.secretKey));
+        setPrivateKey(uint8ArrayToHex(keypair1.secretKey))
+        setPublicKey(keypair1.publicKey.toString())
+console.log("This is the  console log value form handle submit",data)
+     try {
+        
+     } catch (error) {
+        
+     }
     };
 
     return (
