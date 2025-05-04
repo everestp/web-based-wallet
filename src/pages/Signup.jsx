@@ -1,154 +1,137 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ethers } from 'ethers';
-import crypto from 'crypto'
-import { Cipher } from "crypto";
+import axios from "axios";
+import { register } from "../assets/service/AuthService";
+
 const Signup = () => {
 
-    const [seedPhrase, setSeedPhrase] = useState('');
-    const [wallets, setWallets] = useState([]);
-    const [selectedWalletIndex, setSelectedWalletIndex] = useState(0);
-    const [selectedWallet, setSelectedWallet] = useState({});
-    const [walletBalance, setWalletBalance] = useState();
-    const [isTransactionForm, setIsTransactionForm] = useState(false)
-    const secureKey = process.env.SECURE_KEY;
-    const [data, setData] = useState({
-        name: "",
-        phone: "",
-        password: "",
-        privateKey: "",
-        seedPhrase: "",
-        publicKey: ""
-      });
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [privateKey, setPrivateKey] = useState("");
+  const [seedPhrase, setSeedPhrase] = useState("");
+  const [publicKey, setPublicKey] = useState("");
+  const [address, setAddress] = useState("");
+  const [formdata ,setFormdata] =useState({})
+  
+const data = {
+  name: name,
+  phone: phone,
+  password: password,
+  privateKey:privateKey,
+  seedPhrase: seedPhrase,
+  publicKey:publicKey,
+  address:address
+
+}
 
 
-    const updateData = (key, value) => {
-        setData(prevData => ({
-            ...prevData,
-            [key]: value
-        }));
-    };
+
+   
 
     const generateSeedPhrase = () => {
         const mnemonic = ethers.Mnemonic.entropyToPhrase(ethers.randomBytes(16));
+       setSeedPhrase(mnemonic)
+        return mnemonic; // ✅ Returns the generated mnemonic
+    };
 
-        updateData("seedPhrase", mnemonic);
-      };
-      const createWalletFromSeed = () => {
+    const createWalletForUser =  async (seedPhrase) => {
         if (!seedPhrase) return;
-        const hdNode = ethers.HDNodeWallet.fromPhrase(seedPhrase, `m/44'/60'/0'/0/${wallets.length}`);
-    
-        const walletWithId = {
-          id: wallets.length + 1,
-          address: hdNode.address,
-          privateKey: hdNode.privateKey,
-          publicKey: hdNode.publicKey,
-          signingKey: hdNode.signingKey,
-          mnemonic: hdNode.mnemonic.phrase,
-          path: hdNode.path,
-        };
-    
-        setSelectedWallet(hdNode);
-        const newWallets = [...wallets, walletWithId];
-        setWallets(newWallets);
-        setSelectedWalletIndex(newWallets.length - 1);
-        setIsTransactionForm(false)
-    
-        fetchBalance(walletWithId);
-      };
+
+        // Generate wallet
+        const hdWallet = ethers.HDNodeWallet.fromPhrase(seedPhrase);
+
+        // Debugging logs
+        console.log("Generated Public Key:", hdWallet.publicKey);
+        console.log("Generated Address:", hdWallet.address);
+
+        // Encrypt private key before storing it
+      setPrivateKey(hdWallet.privateKey)
+        
+        setPublicKey(hdWallet.publicKey);
+       setAddress(hdWallet.address)
+     
+console.log(data)
+ try {
+  const  response  =  await register(data)
+console.log("This is the response ", response)
+ } catch (error) {
+  console.log("Erroro",error)
+ }
 
 
+        return hdWallet.address; // ✅ Corrected return
+    };
 
-const createWalletForUser = async (userId, seedPhrase) => {
-    if (!seedPhrase) return;
+    const navigate = useNavigate();
 
-    // Generate wallet
-    const hdNode = ethers.HDNodeWallet.fromPhrase(seedPhrase);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        alert(`Phone number submitted: ${phone}`);
+        console.log(phone);
 
-    // Encrypt private key before storing it
-    const encryptedPrivateKey = crypto.createCipher("aes-256-cbc", "your-secure-key")
-        .update(hdNode.privateKey, "utf8", "hex") + crypto.createCipher("aes-256-cbc", "Dfdfnsdkfnsdkfnsdkfn").final("hex");
+        const seedPhrase = generateSeedPhrase(); // ✅ Capture the returned seed phrase
+        console.log("Generated Seed Phrase:", seedPhrase);
 
-    // Store in DB
-    await UserModel.findByIdAndUpdate(userId, {
-        publicKey: hdNode.publicKey,
-        privateKey: encryptedPrivateKey, // Store encrypted private key
-        address: hdNode.address
-    });
+        createWalletForUser(seedPhrase); // ✅ Use the correctly returned seed phrase
+    };
 
-    return hdNode.address;
-};
-
-  const onChangeHandler = (event) => {
-    const { name, value } = event.target;
-   setData((prev)=>({
-   ...prev,
-   [name]:value
-   }))
-  };
-  const navigate = useNavigate();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Phone number submitted: ${data.phone}`);
-   console.log(data)
-   
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-80"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
-        <label className="block text-gray-700 mb-1" htmlFor="phone">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={data.name}
-          onChange={onChangeHandler}
-          placeholder="+977 981234567"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-          required
-        />
-        <label className="block text-gray-700 mb-1" htmlFor="phone">
-          Phone Number
-        </label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={data.phone}
-          onChange={onChangeHandler}
-          placeholder="+977 981234567"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-          required
-        />
-        <label className="block text-gray-700 mb-1" htmlFor="phone">
-          Phone Number
-        </label>
-        <input
-          type="password"
-          id="text"
-          name="pass"
-          value={data.pass}
-          onChange={onChangeHandler}
-          placeholder="Password"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-        >
-          Sign Up
-        </button>
-      </form>
-    </div>
-  );
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <form
+                onSubmit={handleSubmit}
+                className="bg-white p-6 rounded-lg shadow-md w-80"
+            >
+                <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+                <label className="block text-gray-700 mb-1" htmlFor="name">
+                    Name
+                </label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                    required
+                />
+                <label className="block text-gray-700 mb-1" htmlFor="phone">
+                    Phone Number
+                </label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+977 981234567"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                    required
+                />
+                <label className="block text-gray-700 mb-1" htmlFor="password">
+                    Password
+                </label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                    required
+                />
+                <button
+                    type="submit"
+                    className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+                >
+                    Sign Up
+                </button>
+            </form>
+        </div>
+    );
 };
 
 export default Signup;
