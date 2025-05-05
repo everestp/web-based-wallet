@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import { loggedinUser } from "../assets/service/UserService";
 import { toast } from "react-toastify";
 
+
 // Create Context
 export const UserContext = createContext();
 
@@ -9,12 +10,14 @@ export const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
   const [token, setToken] = useState(""); // Fixed typo
   const [userData, setUserData] = useState({});
-
+   const [balance ,setBalance] = useState("")
   const contextValue = {
     token,
     setToken,
     userData,
     setUserData,
+    balance,
+    setBalance
   };
 
   useEffect(() => {
@@ -30,8 +33,10 @@ export const UserContextProvider = ({ children }) => {
       }
     };
     
-    if (token) signinUser(); // Prevent API call unless token exists
-  }, [token]); 
+    if (token) signinUser();
+    // Prevent API call unless token exists
+  }, [token,balance]); 
+
 
   return (
     <UserContext.Provider value={contextValue}>
