@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Keypair } from "@solana/web3.js";
 import { Buffer } from "buffer";
-import axios from "axios";
 import { register } from "../assets/service/AuthService";
 import { toast } from "react-toastify";
 

@@ -3,6 +3,7 @@ import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { getSolPriceInNpr, solBalance } from '../assets/service/solService';
 import SendSolForm from '../components/From/SendSolForm';
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
   const { userData, token, setToken, balance, setBalance } = useUser();
@@ -23,11 +24,11 @@ const Dashboard = () => {
         const solPrice = await getSolPriceInNpr();
         setBalance((solPrice * sol).toFixed(2));
       } catch (error) {
-        console.error("Error fetching balance:", error);
+       console.log("Error fetchind dta",error)
       }
     };
     accountBalance();
-  }, [token]);
+  }, [token ,balance,userData]);
 
   return (
     <>

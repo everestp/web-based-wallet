@@ -8,7 +8,8 @@ export const  loggedinUser = async (token) => {
         const response = await axios.get(`${BASE_URL}/user`,{
             headers :{Authorization :`Bearer ${token}`}
         });
-        return response;
+      
+                return response;
     } catch (error) {
         console.log("DEBUG: Unable to register with error", error);
         throw error;

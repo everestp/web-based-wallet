@@ -9,6 +9,8 @@ import Welcome from './components/Welcome'
 import Signup from './pages/Signup'
 import { ToastContainer } from 'react-toastify'
 import { UserContextProvider } from './context/UserContext'
+import TransactionConfirmation from './pages/TransactionConfirmation'
+import SendSolForm from './components/From/SendSolForm'
 
 function App() {
   const location = useLocation(); // Get current route
@@ -24,9 +26,11 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/confirm' element={<TransactionConfirmation />} />
         <Route path='*' element={<Welcome />} />
       </Routes>
     </>
+    
     </UserContextProvider>
   );
 }

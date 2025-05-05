@@ -1,0 +1,79 @@
+body {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .screen {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: linear-gradient(135deg, #FF6B6B, #6BFFB6, #6BAEFF); */
+  }
+  
+  .card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    width: 350px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    /* color: white; */
+  }
+  
+  .header h2 {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .header p {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  
+  .details {
+    margin: 15px 0;
+  }
+  
+  .details div {
+    font-size: 18px;
+    margin: 8px 0;
+  }
+  
+  .details span {
+    font-weight: bold;
+    color: #FFD700;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .cancel {
+    background: #FF3B3B;
+    color: white;
+  }
+  
+  .confirm {
+    background: #2ECC71;
+    color: white;
+  }
+  
+  .cancel:hover {
+    background: #D83333;
+  }
+  
+  .confirm:hover {
+    background: #25B861;
+  }

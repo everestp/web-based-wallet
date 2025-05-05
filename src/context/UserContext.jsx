@@ -11,17 +11,25 @@ export const UserContextProvider = ({ children }) => {
   const [token, setToken] = useState(""); // Fixed typo
   const [userData, setUserData] = useState({});
    const [balance ,setBalance] = useState("")
+   const [amount ,setAmount] =useState()
+   const [sendUserdata ,setSendUserData]= useState({})
+   console.log("This is form context usercontext",sendUserdata)
   const contextValue = {
     token,
     setToken,
     userData,
     setUserData,
     balance,
-    setBalance
+    setBalance,
+    sendUserdata,
+    setSendUserData,
+    amount,
+    setAmount
   };
 
   useEffect(() => {
     setToken(localStorage.getItem('token')) // Fixed data assignment
+    console.log("This is form context usercontext",sendUserdata)
     const signinUser = async () => {
       try {
         const response = await loggedinUser(token);
@@ -35,7 +43,7 @@ export const UserContextProvider = ({ children }) => {
     
     if (token) signinUser();
     // Prevent API call unless token exists
-  }, [token,balance]); 
+  }, [token]); 
 
 
   return (
