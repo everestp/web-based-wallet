@@ -1,1 +1,1 @@
- export  const AP_URL = 'http://localhost:8080'
+ export  const AP_URL = 'https://web-wallet-backend-springboot.onrender.com'
