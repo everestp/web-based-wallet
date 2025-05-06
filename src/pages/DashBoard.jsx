@@ -33,8 +33,8 @@ const Dashboard = () => {
   return (
     <>
       <SendSolForm showForm={show} setShowForm={setShow} />
-
-      <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen p-6">
+{
+   !show &&  <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen p-6">
         {/* Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
@@ -109,6 +109,8 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
+
+}
     </>
   );
 };
