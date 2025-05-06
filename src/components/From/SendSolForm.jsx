@@ -13,7 +13,7 @@ import { useUser } from '../../context/UserContext';
 
 const SendSolForm = ({ showForm, setShowForm }) => {
 const navigate = useNavigate()
-const { sendUserdata,setSendUserData,token,setAmount,amount} =useUser()
+const { sendUserdata,setSendUserData,token,setAmount,balance} =useUser()
 
   const [status, setStatus] = useState('');
  const [formData ,setFormData] = useState ({
@@ -64,7 +64,7 @@ return (
         <div className="bg-[#121212] rounded-xl px-4 py-3 flex justify-between items-center shadow-inner">
           <div>
             <div className="text-gray-300 text-sm">NPR</div>
-            <div className="text-xl font-bold">99.70</div>
+            <div className="text-xl font-bold">{balance}</div>
             <div className="text-xs text-gray-400">Balance</div>
           </div>
           <div className="w-5 h-5 bg-green-500 rounded-full animate-pulse" />
