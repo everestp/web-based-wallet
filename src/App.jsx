@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import { UserContextProvider } from './context/UserContext'
 import TransactionConfirmation from './pages/TransactionConfirmation'
 import SendSolForm from './components/From/SendSolForm'
+import PaymentSuccess from './pages/PaymentSucess'
 
 function App() {
   const location = useLocation(); // Get current route
@@ -19,6 +20,7 @@ function App() {
     <UserContextProvider>
 
     <>
+   
       <ToastContainer />
       {location.pathname !== '/dashboard' && <Navbar />} {/* Hide Navbar on Dashboard */}
       <Routes>
@@ -27,6 +29,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/confirm' element={<TransactionConfirmation />} />
+        <Route path='/suscess' element={<PaymentSuccess />} />
         <Route path='*' element={<Welcome />} />
       </Routes>
     </>

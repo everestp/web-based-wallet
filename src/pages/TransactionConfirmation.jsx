@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useState } from "react";
 import { useUser } from "../context/UserContext";
 import "./TransactionConfirmation.css";
 import { transferSOL } from "../assets/service/trasnferSol";
@@ -10,17 +10,21 @@ import { useNavigate } from "react-router-dom";
 const TransactionConfirmation = () => {
   const { sendUserdata, amount, userData, setAmount ,balance,setSendUserData} = useUser();
   const navigate = useNavigate()
+  const [loading,setLoading] = useState(false)
 const transferCancle = ()=>{
   setSendUserData({})
   navigate("/dashboard")
 }
   const handleConfirm = async (publicKey, amountInSol, privateKey) => {
     try {
+      setLoading(true)
       const response = await transferSOL(publicKey, amountInSol, privateKey);
       toast.success(`Transaction Successful: Sent ${amountInSol} SOL`);
-      navigate("/dashboard")
+     setLoading(false)
+      navigate("/suscess")
       // Optionally reset amount or redirect after success
-      setAmount("");
+
+    
     } catch (error) {
       console.error("Transaction failed:", error);
       toast.error("Transaction failed!");
@@ -114,7 +118,7 @@ const transferCancle = ()=>{
           await handleConfirm(sendUserdata.publicKey, solAmount, privateKeyUint8);
         }}
       >
-        CONFIRM
+       {loading? "Trasfering -Please Wait":"Confirm"}
       </button>
     </div>
   </div>

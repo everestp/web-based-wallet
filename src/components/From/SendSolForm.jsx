@@ -110,7 +110,7 @@ return (
             <div className="relative">
               <input
                 type="text"
-                name='name'
+                name='remark'
                 onChange={handleChange}
                 placeholder={
                  "Remark"
